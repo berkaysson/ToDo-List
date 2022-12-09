@@ -1,7 +1,9 @@
 :root {
-    --dark-color: #090302;               /*font color*/
-    --secondary-color: #c8bfc7;          /*hover effect or weak font color*/
-    --light-color: #8a7e72;
+    --dark-color: #1d1e2c;               /*font color*/
+    --secondary-color: #59656f;          /*hover effect or weak font color*/
+    --light-color: #d7cdcc;
+    --background-color: #ffffff;
+    --danger-color: #e63946;
 
     --gap: 1.2rem;
     --padding: 1.2rem;
@@ -16,6 +18,7 @@
     --font-xlg: 4.2rem;
     --font-sl: 0.9rem;
     --font-md: 1.2rem;
+    --font-thin: 100;
 
     --transition-size:width 0.2s ease-in;
 }
@@ -31,6 +34,7 @@
 html {
     min-height: 100%;
     font-size: 16px;
+    font-family: 'Raleway', sans-serif;
 }
 
 p {
@@ -56,6 +60,80 @@ button {
     font-size: inherit;
 }
 
-i {
-    font-size: var(--font-lg);
+/* Layout */
+
+body {
+    display: grid;
+    grid-template-columns: minmax(220px, 18%) auto;
+    min-height: 100%;
+    background-color: var(--background-color);
+    color: var(--dark-color);
+}
+
+header {
+    grid-column: 1/3;
+}
+
+nav {
+    grid-column: 1/2;
+}
+
+main {
+    grid-column: 2/3;
+}
+
+/* HEADER */
+
+header {
+    padding: var(--padding);
+}
+
+/* NAV */
+
+nav{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--padding);
+    text-align: left;
+}
+
+nav>* {
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+}
+
+.nav-item>i {
+    width: 1.8rem;
+    font-size: 1.5rem;
+    margin-right: var(--margin);
+}
+
+.project-item {
+    margin-left: var(--margin);
+    padding: var(--padding-sl);
+}
+
+#nav-project {
+    text-decoration: underline;
+}
+
+nav>button {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: var(--padding-lg);
+}
+
+.nav-item:hover {
+    background-color: var(--light-color);
+}
+
+.nav-item:active {
+    text-decoration: underline;
+}
+
+/* MAIN */
+
+main {
+    padding: var(--padding);
 }
