@@ -6,15 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/berkaysson/ToDo-List.git"
-  },
   "keywords": [],
-  "author": "",
+  "author": "berkaysson",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/berkaysson/ToDo-List/issues"
-  },
-  "homepage": "https://github.com/berkaysson/ToDo-List#readme"
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
 }
