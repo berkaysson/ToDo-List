@@ -1,0 +1,61 @@
+:root {
+    --dark-color: #090302;               /*font color*/
+    --secondary-color: #c8bfc7;          /*hover effect or weak font color*/
+    --light-color: #8a7e72;
+
+    --gap: 1.2rem;
+    --padding: 1.2rem;
+    --padding-sl: 0.6rem;
+    --padding-lg:4rem;
+    --btn-padding: 0.7rem;
+    --margin: 1.3rem;
+
+    --border-radius:2px;
+
+    --font-lg: 1.7rem;
+    --font-xlg: 4.2rem;
+    --font-sl: 0.9rem;
+    --font-md: 1.2rem;
+
+    --transition-size:width 0.2s ease-in;
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    font-size: 16px;
+}
+
+p {
+    font-size: var(--font-md);
+}
+
+h1 {
+    font-size: var(--font-xlg);
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+    font-size: var(--font-md);
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+i {
+    font-size: var(--font-lg);
+}
