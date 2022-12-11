@@ -8,7 +8,10 @@ const taskFactory = (name, description, date, tag) => {
     }
 
     const getDate = () => {
-        return date;
+        const day = date.split('/')[0]
+        const month = date.split('/')[1]
+        const year = date.split('/')[2]
+        return `${day}/${month}/${year}`;
     }
 
     const getTag = () => {
