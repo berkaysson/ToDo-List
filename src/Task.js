@@ -19,7 +19,7 @@ const taskFactory = (name, description, date, tag) => {
     }
 
     return {
-        getName, getDate, getDescription, getTag
+        getName, getDate, getDescription, getTag, name, description, date, tag
     }
 }
 
