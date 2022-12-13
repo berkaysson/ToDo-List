@@ -2,10 +2,7 @@ import projectFactory from "./Project";
 
 const todolistFactory = () => {
     let projects = [];
-    projects.push(projectFactory("Home", "no color"))
-    projects.push(projectFactory("Today", "no color"))
-    projects.push(projectFactory("This Week", "no color"))
-    
+
     const addProject = (newProject) => {
         projects.push(newProject);
     }
@@ -14,7 +11,7 @@ const todolistFactory = () => {
         projects = projects.filter(_project => _project.getName() !== project);
     }
 
-    
+
     const getProject = (project) => {
         return projects.find((_project) => _project.getName() === project);
     }
@@ -23,9 +20,8 @@ const todolistFactory = () => {
         return projects;
     }
 
-
     return {
-        addProject, deleteProject, getProject, getAllProjects
+        addProject, deleteProject, getProject, getAllProjects, projects
     }
 }
 
