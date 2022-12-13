@@ -26,7 +26,7 @@ const projectFactory = (name,color) => {
     }
 
     return {
-        getName, getColor, getTask, addTask, getAllTasks, deleteTask
+        getName, getColor, getTask, addTask, getAllTasks, deleteTask, tasks, name, color
     }
 }
 
