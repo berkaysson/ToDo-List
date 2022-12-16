@@ -2,13 +2,13 @@ import taskFactory from "./Task";
 import projectFactory from "./Project";
 import todolistFactory from "./TodoList";
 
-const storageFactory = () => {
+export default class Storage  {
     
-    const storeTodolist = (data) => {
+    static setTodolist(data) {
         localStorage.setItem("todolist", JSON.stringify(data));
     }
 
-    const getTodolist = () => {
+    static getTodolist() {
         const _todolist = todolistFactory();
         const todolist = JSON.parse(localStorage.getItem('todolist'))
         // console.log("Todolist created")
@@ -31,10 +31,4 @@ const storageFactory = () => {
 
         return _todolist
     }
-
-    return {
-        storeTodolist, getTodolist
-    }
 }
-
-export default storageFactory
