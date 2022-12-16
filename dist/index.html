@@ -10,25 +10,48 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css" />  
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
     <header>
         <h1>ToDo List</h1>
     </header>
 
-    <nav>
-        <a class="inbox nav-item"><i class="fa-solid fa-house"></i>Home</a>
-        <a class="inbox nav-item"><i class="fa-solid fa-calendar-day"></i>Today</a>
-        <a class="inbox nav-item"><i class="fa-solid fa-calendar-days"></i>This Week</a>
-        <a class="inbox nav-item"><i class="fa-solid fa-star"></i>Important</a>
-        <div id="nav-project"><h2>Projects</h2></div>
-        <a class="nav-item project-item"><i class="fa-solid fa-list-check"></i>My Project</a>
-        <button class="btn nav-item"><i class="fa-solid fa-plus"></i> Add New Project</button>
+    <nav id="nav">
+        <a id="Home" class="inbox nav-item"><i class="fa-solid fa-house"></i>Home</a>
+        <a id="Today" class="inbox nav-item"><i class="fa-solid fa-calendar-day"></i>Today</a>
+        <a id="ThisWeek" class="inbox nav-item"><i class="fa-solid fa-calendar-days"></i>This Week</a>
+        <a id= "Important"class="inbox nav-item"><i class="fa-solid fa-star"></i>Important</a>
+        <div id="nav-project"><h2>Projects</h2>
+        
+        </div>
+        <div id="add-project-form">
+            <input id="project-name-input" name="project-name-form" type="text" placeholder="Project Name">
+            <button id="add-project-form-btn" class="btn">Add</button>
+            <button id="cancel-project-form-btn" class="btn">Cancel</button>
+        </div>
+        <button id="add-project-btn" class="btn nav-item"><i class="fa-solid fa-plus"></i> Add New Project</button>
     </nav>
 
     <main id="main" class="main">
+        <h2 id="project-name">Home</h2>
+        <table id="projects-table">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Tags</th>
+                </tr>
+            </tbody>
+            <tbody id="project-tasks">
 
+            </tbody>
+        </table>
+
+        <button class="btn add-task">
+            <i class="fa-regular fa-square-plus"></i> Add New Task
+          </button>
     </main>
 
     <!-- <footer></footer> -->
