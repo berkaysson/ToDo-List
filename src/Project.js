@@ -1,13 +1,5 @@
 const projectFactory = (name,color) => {
     let tasks = [];
-    
-    const getName = () => {
-        return name;
-    }
-
-    const getColor = () => {
-        return color;
-    }
 
     const addTask = (newTask) => {
         tasks.push(newTask);
@@ -26,7 +18,7 @@ const projectFactory = (name,color) => {
     }
 
     return {
-        getName, getColor, getTask, addTask, getAllTasks, deleteTask, tasks, name, color
+        getTask, addTask, getAllTasks, deleteTask, tasks, name, color
     }
 }
 

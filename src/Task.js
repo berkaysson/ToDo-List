@@ -1,12 +1,4 @@
 const taskFactory = (name, description, date, tag) => {
-    const getName = () => {
-        return name;
-    }
-
-    const getDescription = () => {
-        return description;
-    }
-
     const getDate = () => {
         const day = date.split('/')[0]
         const month = date.split('/')[1]
@@ -14,12 +6,8 @@ const taskFactory = (name, description, date, tag) => {
         return `${day}/${month}/${year}`;
     }
 
-    const getTag = () => {
-        return tag;
-    }
-
     return {
-        getName, getDate, getDescription, getTag, name, description, date, tag
+        getDate, name, description, date, tag
     }
 }
 
