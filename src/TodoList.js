@@ -11,7 +11,6 @@ const todolistFactory = () => {
         projects = projects.filter(_project => _project.getName() !== project);
     }
 
-
     const getProject = (project) => {
         return projects.find((_project) => _project.getName() === project);
     }
