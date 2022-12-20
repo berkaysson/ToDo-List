@@ -2,17 +2,18 @@ import projectFactory from "./Project";
 
 const todolistFactory = () => {
     let projects = [];
-
+    
     const addProject = (newProject) => {
         projects.push(newProject);
     }
 
-    const deleteProject = (project) => {
-        projects = projects.filter(_project => _project.getName() !== project);
+    const deleteProject = (name) => {
+        projects = projects.filter(_project => _project.name !== name);
+        return projects
     }
 
     const getProject = (project) => {
-        return projects.find((_project) => _project.getName() === project);
+        return projects.find((_project) => _project.name === project);
     }
 
     const getAllProjects = () => {
