@@ -6,7 +6,7 @@ const projectFactory = (name,color) => {
     }
 
     const getTask = (task) => {
-        return tasks.find((_task) => _task.getName() === task);
+        return tasks.find((_task) => _task.name === task);
     }
 
     const getAllTasks = () => {
@@ -14,7 +14,7 @@ const projectFactory = (name,color) => {
     }
 
     const deleteTask = (task) => {
-        tasks = tasks.filter(_task => _task.getName() !== task);
+        tasks = tasks.filter(_task => _task.name !== task);
     }
 
     return {
