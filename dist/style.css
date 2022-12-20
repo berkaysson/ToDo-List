@@ -103,6 +103,11 @@ nav>* {
     border-radius: var(--border-radius);
 }
 
+#nav-project {
+    display: flex;
+    flex-direction: column;
+}
+
 .nav-item>i {
     width: 1.8rem;
     font-size: 1.5rem;
@@ -116,6 +121,10 @@ nav>* {
 
 #nav-project {
     text-decoration: underline;
+}
+
+#add-project-form {
+    display: none;
 }
 
 nav>button {
@@ -137,4 +146,10 @@ nav>button {
 
 main {
     padding: var(--padding);
+}
+
+/* Task Container */
+
+#add-task-form {
+    display: none;
 }

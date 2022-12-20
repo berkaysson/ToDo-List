@@ -22,7 +22,8 @@
         <a id="Today" class="inbox nav-item"><i class="fa-solid fa-calendar-day"></i>Today</a>
         <a id="ThisWeek" class="inbox nav-item"><i class="fa-solid fa-calendar-days"></i>This Week</a>
         <a id= "Important"class="inbox nav-item"><i class="fa-solid fa-star"></i>Important</a>
-        <div id="nav-project"><h2>Projects</h2>
+        <h2>Projects</h2>
+        <div id="nav-project">
         
         </div>
         <div id="add-project-form">
@@ -48,8 +49,16 @@
 
             </tbody>
         </table>
+        <div id="add-task-form">
+            <tr>
+                <th><input type="text" placeholder="Name" max="20" min="2"></th>
+                <th><input type="text" placeholder="Description" max="100"></th>
+                <th><input type="date"></th>
+                <th><input type="text" placeholder="Tags"></th>
+            </tr>
+        </div>
 
-        <button class="btn add-task">
+        <button class="btn add-task" id="add-task-btn">
             <i class="fa-regular fa-square-plus"></i> Add New Task
           </button>
     </main>
