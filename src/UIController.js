@@ -1,4 +1,5 @@
 import Storage from "./Storage";
+import taskFactory from "./Task";
 
 export default class UI {
 
@@ -127,7 +128,7 @@ export default class UI {
         });
 
         $addProjectFormBtn.addEventListener("click", () => {
-            if (UI.checkField($addProjectFormInput.value)) {
+            if (UI.checkField($addProjectFormInput.value, "Project Name")) {
                 Storage.addProject($addProjectFormInput.value);
                 UI.createNavElement()
                 $addProjectForm.style.display = "none";
@@ -144,18 +145,40 @@ export default class UI {
     }
 
     static addTaskForm() {
-        const addTaskBtn = document.getElementById("add-task-btn")
-        const addTaskForm = document.getElementById("add-task-form");
-        // continue from here
+        let newTaskBtn = document.getElementById("add-task-btn")
+        let taskInputs = document.querySelectorAll(".task-input");
+        let addTaskForm = document.getElementById("add-task-form");
+        let addTaskFormBtn = document.getElementById("add-task-form-btn");
+        let cancelTaskFormBtn = document.getElementById("cancel-task-form-btn");
 
-        addTaskBtn.addEventListener("click", () => {
+        newTaskBtn.addEventListener("click", () => {
             addTaskForm.style.display = "table"
         })
+        addTaskFormBtn.addEventListener("click", () => {
+            let formsFilled = false
+            taskInputs.forEach(item => {
+                if(item.name === "name" || item.name === "due-date") {
+                    if(UI.checkField(item.value, item.name)) {
+                        formsFilled = true}
+                    else {
+                        formsFilled = false
+                    }
+                }
+            })
 
-    }
+            if(formsFilled) {
+                let newTask = taskFactory(taskInputs[0].value, taskInputs[1].value, taskInputs[2].value, taskInputs[3].value)
+                console.log(newTask)
+            }  
+        })
 
-    static createConfirmCancelBtn() {
-        // function to create confirm and cancel buttons
+        cancelTaskFormBtn.addEventListener("click", () => {
+            addTaskForm.style.display = "none"
+            taskInputs.forEach(item => {
+                item.value = ""
+            })
+        })
+
     }
 
     static initButtonEvents() {
@@ -163,9 +186,9 @@ export default class UI {
         UI.addTaskForm()
     }
 
-    static checkField(fieldValue) {
+    static checkField(fieldValue, fieldName) {
         if (fieldValue === "") {
-            alert("Field must be filled");
+            alert(`${fieldName} form must be filled`)
             return false
         }
 
