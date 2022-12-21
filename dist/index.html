@@ -28,8 +28,8 @@
         </div>
         <div id="add-project-form">
             <input id="project-name-input" name="project-name-form" type="text" placeholder="Project Name">
-            <button id="add-project-form-btn" class="btn">Add</button>
-            <button id="cancel-project-form-btn" class="btn">Cancel</button>
+            <button id="add-project-form-btn" class="btn"><i class="fa-solid fa-check btn"></i></button>
+            <button id="cancel-project-form-btn" class="btn"><i class="fa-solid fa-xmark btn"></i></button>
         </div>
         <button id="add-project-btn" class="btn nav-item"><i class="fa-solid fa-plus"></i> Add New Project</button>
     </nav>
@@ -51,11 +51,13 @@
         </table>
         <div id="add-task-form">
             <tr>
-                <th><input type="text" placeholder="Name" max="20" min="2"></th>
-                <th><input type="text" placeholder="Description" max="100"></th>
-                <th><input type="date"></th>
-                <th><input type="text" placeholder="Tags"></th>
+                <th><input name="name" class="task-input" type="text" placeholder="Name" max="20" min="2"></th>
+                <th><input class="task-input" type="text" placeholder="Description" max="100"></th>
+                <th><input name="due-date" class="task-input" type="date"></th>
+                <th><input class="task-input" type="text" placeholder="Tags"></th>
             </tr>
+            <button id="add-task-form-btn" class="btn"><i class="fa-solid fa-check btn"></i></button>
+            <button id="cancel-task-form-btn" class="btn"><i class="fa-solid fa-xmark btn"></i></button>
         </div>
 
         <button class="btn add-task" id="add-task-btn">
