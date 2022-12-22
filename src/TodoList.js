@@ -16,12 +16,8 @@ const todolistFactory = () => {
         return projects.find((_project) => _project.name === project);
     }
 
-    const getAllProjects = () => {
-        return projects;
-    }
-
     return {
-        addProject, deleteProject, getProject, getAllProjects, projects
+        addProject, deleteProject, getProject, projects
     }
 }
 

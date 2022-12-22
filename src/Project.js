@@ -9,16 +9,12 @@ const projectFactory = (name,color) => {
         return tasks.find((_task) => _task.name === task);
     }
 
-    const getAllTasks = () => {
-        return tasks;
-    }
-
     const deleteTask = (task) => {
         tasks = tasks.filter(_task => _task.name !== task);
     }
 
     return {
-        getTask, addTask, getAllTasks, deleteTask, tasks, name, color
+        getTask, addTask, deleteTask, tasks, name, color
     }
 }
 
