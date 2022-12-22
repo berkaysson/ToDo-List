@@ -63,9 +63,9 @@ export default class Storage {
         Storage.setTodolist(todolist);
     }
 
-    static deleteProject(name) { 
+    static deleteProject(projectName) { 
         let todolist = Storage.getTodolist();
-        todolist.projects = todolist.projects.filter(_project => _project.name !== name);
+        todolist.projects = todolist.projects.filter(_project => _project.name !== projectName);
         Storage.setTodolist(todolist);
     }
 
@@ -79,6 +79,22 @@ export default class Storage {
     static addTask(projectName, task) {
         let todolist = Storage.getTodolist();
         todolist.projects.find(item => item.name === projectName).addTask(task);
+        Storage.setTodolist(todolist);
+    }
+
+    static deleteTask(projectName, taskName) {
+        let todolist = Storage.getTodolist();
+        todolist.projects.find(item => item.name === projectName).tasks = todolist.projects.find(item => item.name === projectName).tasks.filter(task => task.name !== taskName);
+        Storage.setTodolist(todolist);
+    }
+
+    static editTask(projectName, taskName, newTask){
+        let todolist = Storage.getTodolist();
+        // will make loop for all prop.
+        todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).description = newTask.description
+        todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).date = newTask.date
+        todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).tag = newTask.tag
+        todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).name = newTask.name // it is important to change name lastly otherwise can't find task by name
         Storage.setTodolist(todolist);
     }
 }
