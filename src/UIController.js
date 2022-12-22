@@ -63,9 +63,9 @@ export default class UI {
         }
     }
 
-    static taskLoader(name) {
-        let tasks = Storage.getAllProjects().find(item => item.name === name).getAllTasks()
-        document.getElementById("project-name").textContent = `${name}`
+    static taskLoader(projectName) { //addTask by storage, remove methods from factories
+        let tasks = Storage.getAllProjects().find(item => item.name === projectName).tasks
+        document.getElementById("project-name").textContent = `${projectName}`
 
         const tasksDiv = document.getElementById("project-tasks")
         tasksDiv.textContent = ""
@@ -168,7 +168,12 @@ export default class UI {
 
             if(formsFilled) {
                 let newTask = taskFactory(taskInputs[0].value, taskInputs[1].value, taskInputs[2].value, taskInputs[3].value)
-                console.log(newTask)
+                Storage.addTask(UI.getActiveProjectName(), newTask)
+                UI.taskLoader(UI.getActiveProjectName())
+                addTaskForm.style.display = "none";
+                taskInputs.forEach(item => {
+                    item.value = "";
+                })
             }  
         })
 
@@ -181,9 +186,9 @@ export default class UI {
 
     }
 
-    static initButtonEvents() {
-        UI.addProjectForm()
-        UI.addTaskForm()
+    static getActiveProjectName() {
+        let activeProject =Storage.getProject(document.getElementById("project-name").textContent);
+        return activeProject.name
     }
 
     static checkField(fieldValue, fieldName) {
@@ -193,6 +198,11 @@ export default class UI {
         }
 
         return true
+    }
+
+    static initButtonEvents() {
+        UI.addProjectForm()
+        UI.addTaskForm()
     }
 }
 
