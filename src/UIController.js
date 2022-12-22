@@ -39,9 +39,7 @@ export default class UI {
             // projectIcon.setAttribute("class", "fa-solid fa-list-check")
 
             const editProjectButton = document.createElement("button");
-            const editIcon = document.createElement("button");
-            editIcon.setAttribute("class", `fa-regular fa-pen-to-square`)
-            editProjectButton.appendChild(editIcon);
+            editProjectButton.setAttribute("class", `fa-regular fa-pen-to-square`)
 
             let projectName = document.createTextNode(`${project.name}`);
             // newNavElement.appendChild(projectIcon);
@@ -52,9 +50,10 @@ export default class UI {
                 UI.taskLoader(project.name)
             })
 
-            editProjectButton.addEventListener("click", () => { 
+            editProjectButton.addEventListener("click", () => {
                 UI.createNavElement()
-                UI.editProject(project.name) })
+                UI.editProject(project.name)
+            })
 
             navProjectItem.appendChild(editProjectButton)
             navProjectItem.appendChild(newNavElement)
@@ -63,7 +62,7 @@ export default class UI {
         }
     }
 
-    static taskLoader(projectName) { //addTask by storage, remove methods from factories
+    static taskLoader(projectName) {
         let tasks = Storage.getAllProjects().find(item => item.name === projectName).tasks
         document.getElementById("project-name").textContent = `${projectName}`
 
@@ -72,15 +71,26 @@ export default class UI {
 
         for (let i = 0; i < tasks.length; i++) {
             let taskDiv = `
-                <tr>
+                <tr id="task-${tasks[i].name}">
                     
                 <th><p id = "task-name">${tasks[i].name}</p></th>
                 <th><p>${tasks[i].description}</p></th>
                 <th>${tasks[i].date}</th>
                 <th>${tasks[i].tag}</th>
-                </tr>`;
+                </tr>
+                <button id="btn-${tasks[i].name}" class="fa-regular fa-pen-to-square edit-task"></button>
+                `;
+
+            // let editTaskBtn = document.createElement("button")
+            // editTaskBtn.setAttribute("class", "fa-regular fa-pen-to-square")
             tasksDiv.insertAdjacentHTML("beforeend", taskDiv);
         }
+        let editTaskBtn = document.querySelectorAll(".edit-task")
+        editTaskBtn.forEach(btn => {
+            btn.addEventListener("click", () => {
+                UI.editTask(btn.id.substring(4))
+            });
+        })
     }
 
     static editProject(name) {
@@ -99,6 +109,7 @@ export default class UI {
         projectEditDelete.setAttribute("class", "fa-solid fa-trash")
 
         projectEditApprove.addEventListener("click", () => {
+            if (!UI.checkField(projectNameInput.value, "Project Name")) return
             Storage.editProject(name, projectNameInput.value);
             UI.createNavElement();
         })
@@ -114,6 +125,50 @@ export default class UI {
         projectDiv.appendChild(projectEditApprove);
         projectDiv.appendChild(projectEditCancel);
         projectDiv.appendChild(projectEditDelete);
+    }
+
+    static editTask(taskName) {
+        UI.taskLoader(UI.getActiveProjectName())
+        let taskDiv = document.getElementById(`task-${taskName}`)
+        let task = Storage.getProject(UI.getActiveProjectName()).tasks.find(item => item.name === taskName) // find task
+
+        taskDiv.innerHTML = `
+            <tr>
+            <th><input name="name" class="edit-task-input" type="text" placeholder="Name" max="20" min="2" value = ${task.name}></th>
+            <th><input class="edit-task-input" type="text" placeholder="Description" max="100" value = ${task.description}></th>
+            <th><input name="due-date" class="edit-task-input" type="date" value = ${task.date}></th>
+            <th><input class="edit-task-input" type="text" value = ${task.tag}></th>
+            </tr>
+            <button id = "edit-task-approve-${task.name}" class="btn"><i class="fa-solid fa-check btn"></i></button>
+            <button id = "edit-task-cancel-${task.name}" class="btn"><i class="fa-solid fa-xmark btn"></i></button>
+            <button id = "edit-task-delete-${task.name}" class="btn"><i class="fa-solid fa-trash btn"></i></button>
+            `;
+
+        let editTaskApprove = document.getElementById(`edit-task-approve-${task.name}`);
+        let editTaskCancel = document.getElementById(`edit-task-cancel-${task.name}`);
+        let editTaskdelete = document.getElementById(`edit-task-delete-${task.name}`);
+
+        let editTaskInputs = document.querySelectorAll(".edit-task-input")
+        editTaskApprove.addEventListener("click", () => {
+            let formsFilled = false;
+            if(UI.checkField(editTaskInputs[0].value, "Task Name") && UI.checkField(editTaskInputs[2].value, "Task Due Date")){
+                formsFilled = true
+            }
+            if (formsFilled) {
+                let newTask = taskFactory(editTaskInputs[0].value, editTaskInputs[1].value, editTaskInputs[2].value, editTaskInputs[3].value)// will make loop for all prop.
+                Storage.editTask(UI.getActiveProjectName(), task.name, newTask);
+                UI.taskLoader(UI.getActiveProjectName())
+            }
+        })
+        editTaskCancel.addEventListener("click", () => {
+            UI.taskLoader(UI.getActiveProjectName())
+        })
+        editTaskdelete.addEventListener("click", () => {
+            Storage.deleteTask(UI.getActiveProjectName(), task.name)
+            UI.taskLoader(UI.getActiveProjectName())
+        })
+
+
     }
 
     static addProjectForm() {
@@ -156,25 +211,19 @@ export default class UI {
         })
         addTaskFormBtn.addEventListener("click", () => {
             let formsFilled = false
-            taskInputs.forEach(item => {
-                if(item.name === "name" || item.name === "due-date") {
-                    if(UI.checkField(item.value, item.name)) {
-                        formsFilled = true}
-                    else {
-                        formsFilled = false
-                    }
-                }
-            })
+            if(UI.checkField(taskInputs[0].value, "Task Name") && UI.checkField(taskInputs[2].value, "Task Due Date")){
+                formsFilled = true
+            }
 
-            if(formsFilled) {
-                let newTask = taskFactory(taskInputs[0].value, taskInputs[1].value, taskInputs[2].value, taskInputs[3].value)
+            if (formsFilled) {
+                let newTask = taskFactory(taskInputs[0].value, taskInputs[1].value, taskInputs[2].value, taskInputs[3].value) // will make loop for all prop.
                 Storage.addTask(UI.getActiveProjectName(), newTask)
                 UI.taskLoader(UI.getActiveProjectName())
                 addTaskForm.style.display = "none";
                 taskInputs.forEach(item => {
                     item.value = "";
                 })
-            }  
+            }
         })
 
         cancelTaskFormBtn.addEventListener("click", () => {
@@ -187,7 +236,7 @@ export default class UI {
     }
 
     static getActiveProjectName() {
-        let activeProject =Storage.getProject(document.getElementById("project-name").textContent);
+        let activeProject = Storage.getProject(document.getElementById("project-name").textContent);
         return activeProject.name
     }
 
