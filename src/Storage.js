@@ -63,10 +63,9 @@ export default class Storage {
         Storage.setTodolist(todolist);
     }
 
-    static deleteProject(name) { //deleteProject() won't work, delete projects without method
+    static deleteProject(name) { 
         let todolist = Storage.getTodolist();
-        todolist.deleteProject(name);
-        // todolist.projects = todolist.getAllProjects()
+        todolist.projects = todolist.projects.filter(_project => _project.name !== name);
         Storage.setTodolist(todolist);
     }
 
