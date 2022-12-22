@@ -2,14 +2,14 @@ import taskFactory from "./Task";
 import projectFactory from "./Project";
 import todolistFactory from "./TodoList";
 
-export default class Storage  {
-    
+export default class Storage {
+
     static setTodolist(data) {
         localStorage.setItem("todolist", JSON.stringify(data));
     }
 
     static getTodolist() {
-        if(localStorage.getItem('todolist') === null) {
+        if (localStorage.getItem('todolist') === null) {
             let newTodolist = todolistFactory()
             let homeProject = projectFactory("Home", "no color")
             let todayProject = projectFactory("Today", "no color")
@@ -23,33 +23,36 @@ export default class Storage  {
 
         let todolistParsed = JSON.parse(localStorage.getItem('todolist'))
         let todolist = todolistFactory();
-        for (let projectKey = 0 ; projectKey<todolistParsed["projects"].length; projectKey++) {
+        for (let projectKey = 0; projectKey < todolistParsed["projects"].length; projectKey++) {
             let projectParsed = todolistParsed["projects"][projectKey] // it gives project object with tasks: array, name, color but not produced with factory
             let project = projectFactory(projectParsed.name, projectParsed.color); // it creates new project
-            for(let taskKey = 1; taskKey < projectParsed["tasks"].length; taskKey++) {
-                let taskParsed = project["tasks"][taskKey];
+            // console.log("///"+projectParsed.name)
+            // console.log(projectParsed["tasks"].length)
+            for (let taskKey = 0; taskKey < projectParsed["tasks"].length; taskKey++) {
+                let taskParsed = projectParsed["tasks"][taskKey];
                 let task = taskFactory(taskParsed.name, taskParsed.description,
-                     taskParsed.date, taskParsed.tag);
+                    taskParsed.date, taskParsed.tag);
                 project.addTask(task);
             }
-            if ((project.name === "Home" || project.name === "Today" || project.name === "This Week") && project.getAllTasks().length>0){
-                todolist.getProject(project.name).addTask(project.getAllTasks())
-            }
-            else {
-                todolist.addProject(project);
-            }
+            todolist.addProject(project);
+            // if ((project.name === "Home" || project.name === "Today" || project.name === "This Week") && project.tasks.length > 0) {
+            //     todolist.projects.name.addTask(project.tasks)
+            // }
+            // else {
+            //     todolist.addProject(project);
+            // }
         }
         return todolist
     }
 
-    static getAllProjects(){
+    static getAllProjects() {
         let todolist = Storage.getTodolist()
-        return todolist.getAllProjects();
+        return todolist.projects;
     }
 
-    static getProject(name){
+    static getProject(name) {
         let todolist = Storage.getTodolist();
-        let project = todolist.getAllProjects().find(item => item.name === name);
+        let project = todolist.projects.find(item => item.name === name);
         return project;
     }
 
@@ -60,17 +63,23 @@ export default class Storage  {
         Storage.setTodolist(todolist);
     }
 
-    static deleteProject(name) {
+    static deleteProject(name) { //deleteProject() won't work, delete projects without method
         let todolist = Storage.getTodolist();
         todolist.deleteProject(name);
-        todolist.projects = todolist.getAllProjects()
+        // todolist.projects = todolist.getAllProjects()
         Storage.setTodolist(todolist);
     }
 
-    static editProject(name, newName){
+    static editProject(name, newName) {
         let todolist = Storage.getTodolist();
-        let project = todolist.getAllProjects().find(item => item.name === name);
+        let project = todolist.projects.find(item => item.name === name);
         project.name = newName;
         Storage.setTodolist(todolist)
+    }
+
+    static addTask(projectName, task) {
+        let todolist = Storage.getTodolist();
+        todolist.projects.find(item => item.name === projectName).addTask(task);
+        Storage.setTodolist(todolist);
     }
 }
