@@ -153,3 +153,11 @@ main {
 #add-task-form {
     display: none;
 }
+
+#tags {
+    display: none;
+}
+
+.tag-filter.active {
+    font-weight: bold;
+}
