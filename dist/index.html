@@ -21,7 +21,7 @@
         <a id="Home" class="inbox nav-item"><i class="fa-solid fa-house"></i>Home</a>
         <a id="Today" class="inbox nav-item"><i class="fa-solid fa-calendar-day"></i>Today</a>
         <a id="ThisWeek" class="inbox nav-item"><i class="fa-solid fa-calendar-days"></i>This Week</a>
-        <a id= "Important"class="inbox nav-item"><i class="fa-solid fa-star"></i>Important</a>
+        <a id="TagsNav" class="inbox nav-item"><i class="fa-solid fa-tag"></i>Tags</a>
         <h2>Projects</h2>
         <div id="nav-project">
         
@@ -36,6 +36,9 @@
 
     <main id="main" class="main">
         <h2 id="project-name">Home</h2>
+        <div id="tags">
+
+        </div>
         <table id="projects-table">
             <tbody>
                 <tr>
@@ -54,7 +57,7 @@
                 <th><input name="name" class="task-input" type="text" placeholder="Name" max="20" min="2"></th>
                 <th><input class="task-input" type="text" placeholder="Description" max="100"></th>
                 <th><input name="due-date" class="task-input" type="date"></th>
-                <th><input class="task-input" type="text" placeholder="Tags"></th>
+                <th><input class="task-input" type="text" placeholder="Use commas for multiple tags"></th>
             </tr>
             <button id="add-task-form-btn" class="btn"><i class="fa-solid fa-check btn"></i></button>
             <button id="cancel-task-form-btn" class="btn"><i class="fa-solid fa-xmark btn"></i></button>
