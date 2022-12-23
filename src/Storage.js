@@ -4,56 +4,46 @@ import todolistFactory from "./TodoList";
 
 export default class Storage {
 
-    static setTodolist(data) {
+    static setTodolist(data) { // sets Todolist to local storage
         localStorage.setItem("todolist", JSON.stringify(data));
     }
 
-    static getTodolist() {
-        if (localStorage.getItem('todolist') === null) {
+    static getTodolist() {  // gets Todolist from local storage and add properties of it to a new todolist that create by todolistFactory()
+        if (localStorage.getItem('todolist') === null) { // this will be create an empty todolist because no list were created
             let newTodolist = todolistFactory()
             let homeProject = projectFactory("Home", "no color")
             let todayProject = projectFactory("Today", "no color")
             let thisweekProject = projectFactory("This Week", "no color")
             newTodolist.addProject(homeProject)
             newTodolist.addProject(todayProject)
-            newTodolist.addProject(thisweekProject)
-            Storage.setTodolist(newTodolist);
+            newTodolist.addProject(thisweekProject) // custom projects
+            Storage.setTodolist(newTodolist); // sets empty todolist
             return newTodolist;
         }
 
-        let todolistParsed = JSON.parse(localStorage.getItem('todolist'))
-        let todolist = todolistFactory();
-        for (let projectKey = 0; projectKey < todolistParsed["projects"].length; projectKey++) {
-            let projectParsed = todolistParsed["projects"][projectKey] // it gives project object with tasks: array, name, color but not produced with factory
-            let project = projectFactory(projectParsed.name, projectParsed.color); // it creates new project
-            // console.log("///"+projectParsed.name)
-            // console.log(projectParsed["tasks"].length)
+        let todolistParsed = JSON.parse(localStorage.getItem('todolist')) // if todolist setted before, this gets it and parsed it to new object
+        let todolist = todolistFactory();   // empty todolist, this will take properties from parsed one
+        for (let projectKey = 0; projectKey < todolistParsed["projects"].length; projectKey++) { // iterate over projects of todolistParsed and add them to new empty todolist
+            let projectParsed = todolistParsed["projects"][projectKey] // projects from parsed todolist
+            let project = projectFactory(projectParsed.name, projectParsed.color);
             for (let taskKey = 0; taskKey < projectParsed["tasks"].length; taskKey++) {
-                let taskParsed = projectParsed["tasks"][taskKey];
+                let taskParsed = projectParsed["tasks"][taskKey]; // tasks from parsed todolist and parsed projects
                 let task = taskFactory(taskParsed.name, taskParsed.description,
                     taskParsed.date, taskParsed.tag);
-                project.addTask(task);
+                project.addTask(task);  // adds tasks to projects
             }
-            todolist.addProject(project);
-            // if ((project.name === "Home" || project.name === "Today" || project.name === "This Week") && project.tasks.length > 0) {
-            //     todolist.projects.name.addTask(project.tasks)
-            // }
-            // else {
-            //     todolist.addProject(project);
-            // }
+            todolist.addProject(project);   // adds projects to todolist and return it thus it gives a todolistFactory object with properties from localStorage 
+            // (parsed todolist is another object not created by todolistFactory)
         }
         return todolist
     }
 
     static getAllProjects() {
-        let todolist = Storage.getTodolist()
-        return todolist.projects;
+        return Storage.getTodolist().projects;
     }
 
-    static getProject(name) {
-        let todolist = Storage.getTodolist();
-        let project = todolist.projects.find(item => item.name === name);
-        return project;
+    static getProject(projectName) {
+        return Storage.getTodolist().projects.find(item => item.name === projectName);
     }
 
     static addProject(project) {
@@ -65,13 +55,13 @@ export default class Storage {
 
     static deleteProject(projectName) {
         let todolist = Storage.getTodolist();
-        todolist.projects = todolist.projects.filter(_project => _project.name !== projectName);
+        todolist.projects = todolist.projects.filter(_project => _project.name !== projectName); // filters unmatched projects to new projects array
         Storage.setTodolist(todolist);
     }
 
-    static editProject(name, newName) {
+    static editProject(projectName, newName) {
         let todolist = Storage.getTodolist();
-        let project = todolist.projects.find(item => item.name === name);
+        let project = todolist.projects.find(item => item.name === projectName);
         project.name = newName;
         Storage.setTodolist(todolist)
     }
@@ -84,13 +74,14 @@ export default class Storage {
 
     static deleteTask(projectName, taskName) {
         let todolist = Storage.getTodolist();
-        todolist.projects.find(item => item.name === projectName).tasks = todolist.projects.find(item => item.name === projectName).tasks.filter(task => task.name !== taskName);
+        todolist.projects.find(item => item.name === projectName).tasks =
+            todolist.projects.find(item => item.name === projectName).tasks.filter(task => task.name !== taskName); // finds the project that tasks and removes task 
         Storage.setTodolist(todolist);
     }
 
     static editTask(projectName, taskName, newTask) {
         let todolist = Storage.getTodolist();
-        // will make loop for all prop.
+        // may make loop for all prop.
         todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).description = newTask.description
         todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).date = newTask.date
         todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).tag = newTask.tag
@@ -111,17 +102,17 @@ export default class Storage {
 
     static getAllTags() {
         let projects = Storage.getAllProjects();
-        let tags = new Set();
+        let tags = new Set();   // used Set to tak only unique values
         for (let i = 0; i < projects.length; i++) {
             for (let j = 0; j < projects[i].tasks.length; j++) {
-                if(projects[i].tasks[j].tag.includes(",")){
+                if (projects[i].tasks[j].tag.includes(",")) { // splits tags by commas
                     let subTags = projects[i].tasks[j].tag.split(",")
-                    for(let tag of subTags){
+                    for (let tag of subTags) {
                         tags.add(tag)
                     }
                 }
-                else{
-                    tags.add(projects[i].tasks[j].tag) // make tags an object that contains tag:task pair
+                else {
+                    tags.add(projects[i].tasks[j].tag)
                 }
             }
         }
