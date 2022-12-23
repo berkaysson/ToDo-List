@@ -1,13 +1,7 @@
-const taskFactory = (name, description, date, tag) => {
-    const getDate = () => {
-        const day = date.split('/')[0]
-        const month = date.split('/')[1]
-        const year = date.split('/')[2]
-        return `${day}/${month}/${year}`;
-    }
-
+const taskFactory = (name, description, date, _tag) => {
+    let tag = _tag.replace(/\s/g, '')
     return {
-        getDate, name, description, date, tag
+        name, description, date, tag
     }
 }
 
