@@ -16,7 +16,9 @@ export default class UI {
                 Storage.getAllProjects()[i].name === "This Week") {
                 document.getElementById(`${Storage.getAllProjects()[i].name.replace(/\s/g, '')}`).addEventListener("click",
                     () => {
+                        document.getElementById("add-task-btn").style.display = "block"
                         UI.taskLoader(Storage.getAllProjects()[i].name)
+                        document.getElementById("tags").style.display = "none"
                     })
             }
         }
@@ -48,6 +50,8 @@ export default class UI {
 
             newNavElement.addEventListener("click", () => {
                 UI.taskLoader(project.name)
+                document.getElementById("add-task-btn").style.display = "block"
+                document.getElementById("tags").style.display = "none"
             })
 
             editProjectButton.addEventListener("click", () => {
@@ -81,8 +85,6 @@ export default class UI {
                 <button id="btn-${tasks[i].name}" class="fa-regular fa-pen-to-square edit-task"></button>
                 `;
 
-            // let editTaskBtn = document.createElement("button")
-            // editTaskBtn.setAttribute("class", "fa-regular fa-pen-to-square")
             tasksDiv.insertAdjacentHTML("beforeend", taskDiv);
         }
         let editTaskBtn = document.querySelectorAll(".edit-task")
@@ -167,8 +169,6 @@ export default class UI {
             Storage.deleteTask(UI.getActiveProjectName(), task.name)
             UI.taskLoader(UI.getActiveProjectName())
         })
-
-
     }
 
     static addProjectForm() {
@@ -235,6 +235,74 @@ export default class UI {
 
     }
 
+    static tags() {
+        const tagsNav = document.getElementById("TagsNav")
+        let tagsDiv = document.getElementById("tags")
+        const tasksDiv = document.getElementById("project-tasks")
+        const addTaskBtn = document.getElementById("add-task-btn")
+        
+        tagsNav.addEventListener("click", () => {
+            document.getElementById("project-name").textContent = "Sort tasks by Tags";
+            document.getElementById("tags").style.display = "block"
+            tasksDiv.textContent = ""
+            addTaskBtn.style.display = "none"
+            UI.createTagBtn(Storage.getAllTags())
+        })
+    }
+
+    static createTagBtn(tagArray){
+        let tagsDiv = document.getElementById("tags")
+        const tasksDiv = document.getElementById("project-tasks")
+        tagsDiv.textContent = ""
+        tagArray.forEach(tag => {
+            let tagFilter = document.createElement("button");
+            tagFilter.setAttribute("class", "tag-filter");
+            tagFilter.textContent = tag;
+            tagFilter.addEventListener("click",() => {
+                tagFilter.classList.toggle("active")
+                let activeTags = [];
+                let activeTasks = Storage.getAllTasks();
+
+                tagsDiv.childNodes.forEach(item => {
+                    if(item.classList.contains("active")){
+                        activeTags.push(item.textContent)
+                    }
+                })
+
+                tasksDiv.textContent = ""
+                for(let task of Storage.getAllTasks()){
+                    let tagsofTask = []
+                    if(task.tag.includes(",")){
+                        task.tag.split(",").forEach(e => {
+                            tagsofTask.push(e)
+                        });
+                    } 
+                    else tagsofTask.push(task.tag) 
+                    for(let _tag of activeTags){
+                        if(!tagsofTask.includes(_tag)){
+                            activeTasks = activeTasks.filter(_task => _task.name !== task.name)
+                        }
+                    }
+                }
+
+                for(let task of activeTasks){
+                    let taskDiv = `
+                            <tr id="task-${task.name}">
+                                
+                            <th><p id = "task-name">${task.name}</p></th>
+                            <th><p>${task.description}</p></th>
+                            <th>${task.date}</th>
+                            <th>${task.tag}</th>
+                            </tr>
+                            `;
+                    tasksDiv.insertAdjacentHTML("beforeend", taskDiv);
+                }
+            })
+
+            tagsDiv.appendChild(tagFilter)
+        })
+    }
+
     static getActiveProjectName() {
         let activeProject = Storage.getProject(document.getElementById("project-name").textContent);
         return activeProject.name
@@ -252,6 +320,7 @@ export default class UI {
     static initButtonEvents() {
         UI.addProjectForm()
         UI.addTaskForm()
+        UI.tags()
     }
 }
 

@@ -63,7 +63,7 @@ export default class Storage {
         Storage.setTodolist(todolist);
     }
 
-    static deleteProject(projectName) { 
+    static deleteProject(projectName) {
         let todolist = Storage.getTodolist();
         todolist.projects = todolist.projects.filter(_project => _project.name !== projectName);
         Storage.setTodolist(todolist);
@@ -88,7 +88,7 @@ export default class Storage {
         Storage.setTodolist(todolist);
     }
 
-    static editTask(projectName, taskName, newTask){
+    static editTask(projectName, taskName, newTask) {
         let todolist = Storage.getTodolist();
         // will make loop for all prop.
         todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).description = newTask.description
@@ -96,5 +96,35 @@ export default class Storage {
         todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).tag = newTask.tag
         todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).name = newTask.name // it is important to change name lastly otherwise can't find task by name
         Storage.setTodolist(todolist);
+    }
+
+    static getAllTasks() {
+        let projects = Storage.getAllProjects();
+        let tasks = [];
+        for (let i = 0; i < projects.length; i++) {
+            for (let j = 0; j < projects[i].tasks.length; j++) {
+                tasks.push(projects[i].tasks[j])
+            }
+        }
+        return tasks
+    }
+
+    static getAllTags() {
+        let projects = Storage.getAllProjects();
+        let tags = new Set();
+        for (let i = 0; i < projects.length; i++) {
+            for (let j = 0; j < projects[i].tasks.length; j++) {
+                if(projects[i].tasks[j].tag.includes(",")){
+                    let subTags = projects[i].tasks[j].tag.split(",")
+                    for(let tag of subTags){
+                        tags.add(tag)
+                    }
+                }
+                else{
+                    tags.add(projects[i].tasks[j].tag) // make tags an object that contains tag:task pair
+                }
+            }
+        }
+        return tags
     }
 }
