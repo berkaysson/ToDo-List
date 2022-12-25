@@ -1,5 +1,6 @@
 import Storage from "./Storage";
 import taskFactory from "./Task";
+import {isToday, isThisWeek} from "date-fns"
 
 export default class UI {
 
@@ -10,22 +11,87 @@ export default class UI {
     }
 
     static projectLoader() {
-        for (let i = 0; i < 3; i++) { // First three project of todolist is custom projects
-            if (Storage.getAllProjects()[i].name === "Home" ||
-                Storage.getAllProjects()[i].name === "Today" ||
-                Storage.getAllProjects()[i].name === "This Week") {
-                document.getElementById(`${Storage.getAllProjects()[i].name.replace(/\s/g, '')}`).addEventListener("click",
-                    () => {
-                        document.getElementById("add-task-btn").style.display = "block" // today and this week will not have add new task button, they will display tasks acc to dates
-                        UI.taskLoader(Storage.getAllProjects()[i].name)
-                        document.getElementById("tags").style.display = "none"
-                    })
-            }
-        }
+        let homeProjectDiv = document.getElementById("Home");
+        homeProjectDiv.addEventListener("click", () => {
+            document.getElementById("add-task-btn").style.display = "block"
+            document.getElementById("tags").style.display = "none"
+            UI.taskLoader(Storage.getAllProjects()[0].name);
+        })
+
+        let todayProjectDiv = document.getElementById("Today")
+        todayProjectDiv.addEventListener("click", () => {
+            document.getElementById("add-task-btn").style.display = "none"
+            document.getElementById("tags").style.display = "none"
+            UI.loadTodayTasks();
+        })
+
+        let weekProjectDiv = document.getElementById("ThisWeek")
+        weekProjectDiv.addEventListener("click", () => {
+            document.getElementById("add-task-btn").style.display = "none"
+            document.getElementById("tags").style.display = "none"
+            UI.loadWeeklyTasks();
+        })
+
         UI.createNavElement()
+
+        // for (let i = 0; i < 3; i++) { // First three project of todolist is custom projects
+        //     if (Storage.getAllProjects()[i].name === "Home" ||
+        //         Storage.getAllProjects()[i].name === "Today" ||
+        //         Storage.getAllProjects()[i].name === "This Week") {
+        //         document.getElementById(`${Storage.getAllProjects()[i].name.replace(/\s/g, '')}`).addEventListener("click",
+        //             () => {
+        //                 document.getElementById("add-task-btn").style.display = "block"
+        //                 UI.taskLoader(Storage.getAllProjects()[i].name)
+        //                 document.getElementById("tags").style.display = "none"
+        //                 if(Storage.getAllProjects()[i].name !== "Home") document.getElementById("add-task-btn").style.display = "none"
+        //             })
+        //     }
+        // }   
     }
 
-    static createNavElement() { // loads all created projects not custom projects (Home, Today, This week)
+    static loadTodayTasks() {
+        document.getElementById("project-name").textContent = `Today`
+        const tasksDiv = document.getElementById("project-tasks")
+        tasksDiv.textContent = ""
+        
+        for (let task of Storage.getAllTasks()) {   // checks if the task date is equal to today's
+            if(isToday(new Date(task.date))) {
+                let taskDiv = `
+                    <tr id="task-${task.name}">
+                        
+                    <th><p id = "task-name">${task.name}</p></th>
+                    <th><p>${task.description}</p></th>
+                    <th>${task.date}</th>
+                    <th>${task.tag}</th>
+                    </tr>
+                    `;
+                tasksDiv.insertAdjacentHTML("beforeend", taskDiv);
+            }
+        }
+    }
+
+    static loadWeeklyTasks() {
+        document.getElementById("project-name").textContent = `This Week`
+        const tasksDiv = document.getElementById("project-tasks")
+        tasksDiv.textContent = ""
+
+        for (let task of Storage.getAllTasks()) {   // checks if the task date is in this week
+            if(isThisWeek(new Date(task.date))) {
+                let taskDiv = `
+                    <tr id="task-${task.name}">
+                        
+                    <th><p id = "task-name">${task.name}</p></th>
+                    <th><p>${task.description}</p></th>
+                    <th>${task.date}</th>
+                    <th>${task.tag}</th>
+                    </tr>
+                    `;
+                tasksDiv.insertAdjacentHTML("beforeend", taskDiv);
+            }
+        }
+    }
+
+    static createNavElement() { // loads all created projects but not custom projects (Home, Today, This week)
         const nav = document.getElementById("nav-project");
         nav.textContent = "";
         for (let i = 3; i < Storage.getAllProjects().length; i++) { // iterate over all projects and creates and loads projects as nav items
@@ -78,7 +144,7 @@ export default class UI {
                 <th>${tasks[i].tag}</th>
                 </tr>
                 <button id="btn-${tasks[i].name}" class="fa-regular fa-pen-to-square edit-task"></button>
-                `;
+                `;  // may make a function to create this node
 
             tasksDiv.insertAdjacentHTML("beforeend", taskDiv);
         }
