@@ -85,12 +85,13 @@ export default class UI {
 
             let navProjectItem = document.createElement("div")
             navProjectItem.setAttribute("id", `${project.name}`)
+            navProjectItem.setAttribute("class", "nav-item")
 
             let projectLink = document.createElement("a");
             projectLink.setAttribute("class", "nav-item project-item");
 
             const editProjectButton = document.createElement("button");
-            editProjectButton.setAttribute("class", `fa-regular fa-pen-to-square`)
+            editProjectButton.setAttribute("class", `fa-regular fa-pen-to-square edit-btn icon-btn`)
 
             let projectNameNode = document.createTextNode(`${project.name}`);
             projectLink.appendChild(projectNameNode)
@@ -124,12 +125,12 @@ export default class UI {
             let taskDiv = `
                 <tr id="task-${tasks[i].name}">
                     
-                <th><p id = "task-name">${tasks[i].name}</p></th>
-                <th><p>${tasks[i].description}</p></th>
-                <th>${tasks[i].date}</th>
-                <th>${tasks[i].tag}</th>
+                    <th><p id = "task-name">${tasks[i].name}</p></th>
+                    <th><p>${tasks[i].description}</p></th>
+                    <th>${tasks[i].date}</th>
+                    <th>${tasks[i].tag}</th>
+                    <th><button id="btn-${tasks[i].name}" class="fa-regular fa-pen-to-square edit-task icon-btn"></button></th>
                 </tr>
-                <button id="btn-${tasks[i].name}" class="fa-regular fa-pen-to-square edit-task"></button>
                 `;  // may make a function to create this node
 
             tasksDiv.insertAdjacentHTML("beforeend", taskDiv);
@@ -154,9 +155,9 @@ export default class UI {
         const projectEditCancelBtn = document.createElement("button")
         const projectEditDeleteBtn = document.createElement("button")
 
-        projectEditApproveBtn.setAttribute("class", "fa-solid fa-check btn")
-        projectEditCancelBtn.setAttribute("class", "fa-solid fa-xmark btn")
-        projectEditDeleteBtn.setAttribute("class", "fa-solid fa-trash")
+        projectEditApproveBtn.setAttribute("class", "fa-solid fa-check icon-btn")
+        projectEditCancelBtn.setAttribute("class", "fa-solid fa-xmark icon-btn")
+        projectEditDeleteBtn.setAttribute("class", "fa-solid fa-trash icon-btn")
 
         projectEditApproveBtn.addEventListener("click", () => {
             if (!UI.checkField(editProjectNameInput.value, "Project Name")) return
@@ -190,9 +191,9 @@ export default class UI {
             <th><input name="due-date" class="edit-task-input" type="date" value = ${task.date}></th>
             <th><input class="edit-task-input" type="text" value = ${task.tag}></th>
             </tr>
-            <button id = "edit-task-approve-${task.name}" class="btn"><i class="fa-solid fa-check btn"></i></button>
-            <button id = "edit-task-cancel-${task.name}" class="btn"><i class="fa-solid fa-xmark btn"></i></button>
-            <button id = "edit-task-delete-${task.name}" class="btn"><i class="fa-solid fa-trash btn"></i></button>
+            <button id = "edit-task-approve-${task.name}" class="fa-solid fa-check icon-btn"></button>
+            <button id = "edit-task-cancel-${task.name}" class="fa-solid fa-xmark icon-btn"></button>
+            <button id = "edit-task-delete-${task.name}" class="fa-solid fa-trash icon-btn"></button>
             `;
 
         let editTaskApproveBtn = document.getElementById(`edit-task-approve-${task.name}`);
