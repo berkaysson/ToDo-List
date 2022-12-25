@@ -42,7 +42,7 @@ export default class Storage {
         return Storage.getTodolist().projects;
     }
 
-    static getProject(projectName) {
+    static getProject(projectName) {    // check if it works
         return Storage.getTodolist().projects.find(item => item.name === projectName);
     }
 
