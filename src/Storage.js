@@ -46,11 +46,13 @@ export default class Storage {
         return Storage.getTodolist().projects.find(item => item.name === projectName);
     }
 
-    static addProject(project) {
-        let todolist = Storage.getTodolist();
-        const newProject = projectFactory(project, "no color");
-        todolist.addProject(newProject);
-        Storage.setTodolist(todolist);
+    static addProject(projectName) {
+        if(Storage.checkProjectName(projectName)){
+            let todolist = Storage.getTodolist();
+            const newProject = projectFactory(projectName, "no color");
+            todolist.addProject(newProject);
+            Storage.setTodolist(todolist);
+        }
     }
 
     static deleteProject(projectName) {
@@ -60,16 +62,20 @@ export default class Storage {
     }
 
     static editProject(projectName, newName) {
-        let todolist = Storage.getTodolist();
-        let project = todolist.projects.find(item => item.name === projectName);
-        project.name = newName;
-        Storage.setTodolist(todolist)
+        if(Storage.checkProjectName(newName)){
+            let todolist = Storage.getTodolist();
+            let project = todolist.projects.find(item => item.name === projectName);
+            project.name = newName;
+            Storage.setTodolist(todolist)
+        }
     }
 
     static addTask(projectName, task) {
-        let todolist = Storage.getTodolist();
-        todolist.projects.find(item => item.name === projectName).addTask(task);
-        Storage.setTodolist(todolist);
+        if(Storage.checkTaskName(task.name)){
+            let todolist = Storage.getTodolist();
+            todolist.projects.find(item => item.name === projectName).addTask(task);
+            Storage.setTodolist(todolist);
+        }
     }
 
     static deleteTask(projectName, taskName) {
@@ -80,13 +86,15 @@ export default class Storage {
     }
 
     static editTask(projectName, taskName, newTask) {
-        let todolist = Storage.getTodolist();
-        // may make loop for all prop.
-        todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).description = newTask.description
-        todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).date = newTask.date
-        todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).tag = newTask.tag
-        todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).name = newTask.name // it is important to change name lastly otherwise can't find task by name
-        Storage.setTodolist(todolist);
+        if(Storage.checkTaskName(newTask.name)){
+            let todolist = Storage.getTodolist();
+            // may make loop for all prop.
+            todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).description = newTask.description
+            todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).date = newTask.date
+            todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).tag = newTask.tag
+            todolist.projects.find(item => item.name === projectName).tasks.find(item => item.name === taskName).name = newTask.name // it is important to change name lastly otherwise can't find task by name
+            Storage.setTodolist(todolist);
+        }
     }
 
     static getAllTasks() {
@@ -117,5 +125,25 @@ export default class Storage {
             }
         }
         return tags
+    }
+
+    static checkProjectName(projectName) {
+        for(let project of Storage.getAllProjects()){
+            if (project.name === projectName){
+                alert("This project name has been used before, please enter another name.")
+                return false
+            }
+        }
+        return true
+    }
+
+    static checkTaskName(taskName){
+        for(let task of Storage.getAllTasks()){
+            if (task.name === taskName){
+                alert("This task name has been used before, please enter another name.")
+                return false
+            }
+        }
+        return true
     }
 }
