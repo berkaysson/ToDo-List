@@ -1,6 +1,6 @@
 import Storage from "./Storage";
 import taskFactory from "./Task";
-import {isToday, isThisWeek} from "date-fns"
+import { isToday, isThisWeek } from "date-fns"
 
 export default class UI {
 
@@ -33,29 +33,15 @@ export default class UI {
         })
 
         UI.createNavElement()
-
-        // for (let i = 0; i < 3; i++) { // First three project of todolist is custom projects
-        //     if (Storage.getAllProjects()[i].name === "Home" ||
-        //         Storage.getAllProjects()[i].name === "Today" ||
-        //         Storage.getAllProjects()[i].name === "This Week") {
-        //         document.getElementById(`${Storage.getAllProjects()[i].name.replace(/\s/g, '')}`).addEventListener("click",
-        //             () => {
-        //                 document.getElementById("add-task-btn").style.display = "block"
-        //                 UI.taskLoader(Storage.getAllProjects()[i].name)
-        //                 document.getElementById("tags").style.display = "none"
-        //                 if(Storage.getAllProjects()[i].name !== "Home") document.getElementById("add-task-btn").style.display = "none"
-        //             })
-        //     }
-        // }   
     }
 
     static loadTodayTasks() {
         document.getElementById("project-name").textContent = `Today`
         const tasksDiv = document.getElementById("project-tasks")
         tasksDiv.textContent = ""
-        
+
         for (let task of Storage.getAllTasks()) {   // checks if the task date is equal to today's
-            if(isToday(new Date(task.date))) {
+            if (isToday(new Date(task.date))) {
                 let taskDiv = `
                     <tr id="task-${task.name}">
                         
@@ -76,7 +62,7 @@ export default class UI {
         tasksDiv.textContent = ""
 
         for (let task of Storage.getAllTasks()) {   // checks if the task date is in this week
-            if(isThisWeek(new Date(task.date))) {
+            if (isThisWeek(new Date(task.date))) {
                 let taskDiv = `
                     <tr id="task-${task.name}">
                         
