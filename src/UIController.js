@@ -12,10 +12,15 @@ export default class UI {
 
     static projectLoader() {
         let homeProjectDiv = document.getElementById("Home");
+        homeProjectDiv.classList.add("active")
         homeProjectDiv.addEventListener("click", () => {
-            document.getElementById("add-task-btn").style.display = "block"
+            document.getElementById("add-task-btn").style.display = "inline-block"
             document.getElementById("tags").style.display = "none"
             UI.taskLoader(Storage.getAllProjects()[0].name);
+            document.querySelectorAll(".nav-item").forEach(item => {
+                item.classList.remove("active")
+            })
+            homeProjectDiv.classList.add("active")
         })
 
         let todayProjectDiv = document.getElementById("Today")
@@ -23,6 +28,10 @@ export default class UI {
             document.getElementById("add-task-btn").style.display = "none"
             document.getElementById("tags").style.display = "none"
             UI.loadTodayTasks();
+            document.querySelectorAll(".nav-item").forEach(item => {
+                item.classList.remove("active")
+            })
+            todayProjectDiv.classList.add("active")
         })
 
         let weekProjectDiv = document.getElementById("ThisWeek")
@@ -30,6 +39,10 @@ export default class UI {
             document.getElementById("add-task-btn").style.display = "none"
             document.getElementById("tags").style.display = "none"
             UI.loadWeeklyTasks();
+            document.querySelectorAll(".nav-item").forEach(item => {
+                item.classList.remove("active")
+            })
+            weekProjectDiv.classList.add("active")
         })
 
         UI.createNavElement()
@@ -85,7 +98,7 @@ export default class UI {
 
             let navProjectItem = document.createElement("div")
             navProjectItem.setAttribute("id", `${project.name}`)
-            navProjectItem.setAttribute("class", "nav-item")
+            navProjectItem.setAttribute("class", "project-item-wrapper")
 
             let projectLink = document.createElement("a");
             projectLink.setAttribute("class", "nav-item project-item");
@@ -98,8 +111,12 @@ export default class UI {
 
             projectLink.addEventListener("click", () => {   // add event to projects to load tasks of it
                 UI.taskLoader(project.name)
-                document.getElementById("add-task-btn").style.display = "block"
+                document.getElementById("add-task-btn").style.display = "inline-block"
                 document.getElementById("tags").style.display = "none"
+                document.querySelectorAll(".nav-item").forEach(item => {
+                    item.classList.remove("active")
+                })
+                projectLink.classList.add("active")
             })
 
             editProjectButton.addEventListener("click", () => {
@@ -230,7 +247,7 @@ export default class UI {
         const cancelProjectFormBtn = document.getElementById("cancel-project-form-btn");
 
         addProjectBtn.addEventListener("click", () => {
-            addProjectForm.style.display = "block";
+            addProjectForm.style.display = "grid";
         });
 
         addProjectFormBtn.addEventListener("click", () => {
@@ -257,7 +274,7 @@ export default class UI {
         let cancelTaskFormBtn = document.getElementById("cancel-task-form-btn");
 
         newTaskBtn.addEventListener("click", () => {
-            addTaskForm.style.display = "table"
+            addTaskForm.style.display = "flex"
         })
         addTaskFormBtn.addEventListener("click", () => {
             let formsFilled = false
@@ -292,10 +309,14 @@ export default class UI {
 
         tagsNav.addEventListener("click", () => {
             document.getElementById("project-name").textContent = "Sort tasks by Tags";
-            document.getElementById("tags").style.display = "block"
+            document.getElementById("tags").style.display = "flex"
             tasksDiv.textContent = ""
             addTaskBtn.style.display = "none"
             UI.createTagBtn(Storage.getAllTags())
+            document.querySelectorAll(".nav-item").forEach(item => {
+                item.classList.remove("active")
+            })
+            tagsNav.classList.add("active")
         })
     }
 
@@ -306,12 +327,18 @@ export default class UI {
         tagsDiv.textContent = ""
 
         tagSet.forEach(tag => {
+            if(tag === "") return
             let tagFilter = document.createElement("button");
             tagFilter.setAttribute("class", "tag-filter");
             tagFilter.textContent = tag;
+
+            let crossMarkTag = document.createElement("i")
+            crossMarkTag.setAttribute("class", "fa-solid fa-xmark")
+            tagFilter.appendChild(crossMarkTag)
+
             tagFilter.addEventListener("click", () => {
                 tagFilter.classList.toggle("active")    // activate tag
-
+                crossMarkTag.classList.toggle("active")
                 let activeTags = [];
                 let activeTasks = Storage.getAllTasks();    // initially there is no active tag so all tasks active
 
@@ -355,6 +382,26 @@ export default class UI {
         })
     }
 
+    static responsiveNavMenu(){
+        const sideBarBtn = document.getElementById("sidebar-btn")
+        const sideBarCloseBtn = document.getElementById("sidebar-close-btn")
+        let nav = document.getElementById("nav")
+        sideBarBtn.addEventListener("click", () => {
+            nav.style.width = "75%"
+            nav.style.left = "0"
+            sideBarBtn.style.display = "none"
+            sideBarCloseBtn.style.display = "inline-block"
+        })
+
+        sideBarCloseBtn.addEventListener("click", () => {
+            nav.style.width = "0"
+            nav.style.left = "-200px"
+            sideBarBtn.style.display = "inline-block"
+            sideBarCloseBtn.style.display = "none"
+        })
+
+    }
+
     static getActiveProjectName() {
         let activeProject = Storage.getProject(document.getElementById("project-name").textContent);
         return activeProject.name
@@ -372,5 +419,6 @@ export default class UI {
         UI.addProjectForm()
         UI.addTaskForm()
         UI.tags()
+        UI.responsiveNavMenu()
     }
 }

@@ -129,6 +129,17 @@ export default class Storage {
 
     static checkProjectName(projectName) {
         for(let project of Storage.getAllProjects()){
+            // if(isEdit){
+            //     if(project === Storage.getProject(oldName)){
+            //         continue
+            //     }
+                
+            //     if (project.name === projectName){
+            //         alert("This project name has been used before, please enter another name.")
+            //         return false
+            //     }
+            
+            
             if (project.name === projectName){
                 alert("This project name has been used before, please enter another name.")
                 return false
@@ -137,7 +148,7 @@ export default class Storage {
         return true
     }
 
-    static checkTaskName(taskName){
+    static checkTaskName(taskName){ // fix edit
         for(let task of Storage.getAllTasks()){
             if (task.name === taskName){
                 alert("This task name has been used before, please enter another name.")
